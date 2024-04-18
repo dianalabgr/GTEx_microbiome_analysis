@@ -16,3 +16,8 @@ there are the scripts for creating all the necessary files for the analysis! The
   5. Isolation_microbial_reads_remaping_bowtie
   6. humann3_after_bowtie
   7. Taxonomic_Assignment_Kaiju
+  8. living_dataset (contains the pipeline for downloading and analyzing the data from the project PRJEB4337)
+
+
+In the folder analysis:
+there are the scritps 
