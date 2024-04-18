@@ -1,0 +1,85 @@
+Superkingdom	Phylum	Class	Order	Family	Genus	Species	Scientific_Name	TaxID	NumCounts
+
+Eukaryota	Ascomycota	Schizosaccharomycetes	Schizosaccharomycetales	Schizosaccharomycetaceae	Schizosaccharomyces	Schizosaccharomyces pombe	Schizosaccharomyces pombe	4896	6.162
+Eukaryota	Microsporidia	NA	NA	Unikaryonidae	Encephalitozoon	Encephalitozoon cuniculi	Encephalitozoon cuniculi GB-M1	284813	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Saccharomyces	Saccharomyces cerevisiae	Saccharomyces cerevisiae S288C	559292	102.62409
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Eremothecium	Eremothecium gossypii	Eremothecium gossypii ATCC 10895	284811	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Debaryomycetaceae	Scheffersomyces	Scheffersomyces stipitis	Scheffersomyces stipitis CBS 6054	322104	0
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus fumigatus	Aspergillus fumigatus Af293	330879	1.0
+Eukaryota	Ascomycota	Leotiomycetes	Helotiales	Sclerotiniaceae	Botrytis	Botrytis cinerea	Botrytis cinerea B05.10	332648	4.0
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus oryzae	Aspergillus oryzae RIB40	510516	0
+Eukaryota	Ascomycota	Sordariomycetes	Sordariales	Sordariaceae	Neurospora	Neurospora crassa	Neurospora crassa OR74A	367110	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Dipodascaceae	Yarrowia	Yarrowia lipolytica	Yarrowia lipolytica CLIB122	284591	4.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Debaryomycetaceae	Candida	Candida dubliniensis	Candida dubliniensis CD36	573826	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Phaffomycetaceae	Komagataella	Komagataella phaffii	Komagataella phaffii GS115	644223	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Zygosaccharomyces	Zygosaccharomyces rouxii	Zygosaccharomyces rouxii	4956	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Lachancea	Lachancea thermotolerans	Lachancea thermotolerans CBS 6340	559295	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Debaryomycetaceae	Debaryomyces	Debaryomyces hansenii	Debaryomyces hansenii CBS767	284592	72.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Kluyveromyces	Kluyveromyces lactis	Kluyveromyces lactis	28985	3.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Nakaseomyces	Nakaseomyces glabratus	Nakaseomyces glabratus	5478	0
+Eukaryota	Microsporidia	NA	NA	Unikaryonidae	Encephalitozoon	Encephalitozoon intestinalis	Encephalitozoon intestinalis ATCC 50506	876142	0
+Eukaryota	Basidiomycota	Tremellomycetes	Tremellales	Cryptococcaceae	Cryptococcus	Cryptococcus gattii VGI	Cryptococcus gattii WM276	367775	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Eremothecium	Eremothecium cymbalariae	Eremothecium cymbalariae DBVPG#7215	931890	0
+Eukaryota	Ascomycota	Sordariomycetes	Sordariales	Chaetomiaceae	Thermothielavioides	Thermothielavioides terrestris	Thermothielavioides terrestris NRRL 8126	578455	5.0
+Eukaryota	Ascomycota	Sordariomycetes	Sordariales	Chaetomiaceae	Thermothelomyces	Thermothelomyces thermophilus	Thermothelomyces thermophilus ATCC 42464	573729	10.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Naumovozyma	Naumovozyma dairenensis	Naumovozyma dairenensis CBS 421	1071378	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Naumovozyma	Naumovozyma castellii	Naumovozyma castellii CBS 4309	1064592	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Torulaspora	Torulaspora delbrueckii	Torulaspora delbrueckii	4950	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Tetrapisispora	Tetrapisispora phaffii	Tetrapisispora phaffii CBS 4417	1071381	0
+Eukaryota	Ascomycota	Sordariomycetes	Magnaporthales	Pyriculariaceae	Pyricularia	Pyricularia oryzae	Pyricularia oryzae 70-15	242507	0
+Eukaryota	Ascomycota	Dothideomycetes	Mycosphaerellales	Mycosphaerellaceae	Zymoseptoria	Zymoseptoria tritici	Zymoseptoria tritici IPO323	336722	5.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Debaryomycetaceae	Candida	Candida orthopsilosis	Candida orthopsilosis Co 90-125	1136231	0
+Eukaryota	Microsporidia	NA	NA	Unikaryonidae	Encephalitozoon	Encephalitozoon hellem	Encephalitozoon hellem ATCC 50504	907965	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Kazachstania	Kazachstania africana	Kazachstania africana CBS 2517	1071382	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Tetrapisispora	Tetrapisispora blattae	Tetrapisispora blattae CBS 6284	1071380	1.0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium pseudograminearum	Fusarium pseudograminearum CS3096	1028729	0
+Eukaryota	Microsporidia	NA	NA	Unikaryonidae	Encephalitozoon	Encephalitozoon romaleae	Encephalitozoon romaleae SJ-2008	1178016	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium graminearum	Fusarium graminearum PH-1	229533	1.0
+Eukaryota	Basidiomycota	Ustilaginomycetes	Ustilaginales	Ustilaginaceae	Ustilago	Ustilago maydis	Ustilago maydis 521	237631	7.0
+Eukaryota	Basidiomycota	Tremellomycetes	Tremellales	Cryptococcaceae	Cryptococcus	Cryptococcus neoformans	Cryptococcus neoformans var. grubii H99	235443	4.45501
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Pichiaceae	Ogataea	Ogataea parapolymorpha	Ogataea parapolymorpha DL-1	871575	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Eremothecium	Eremothecium sinecaudum	Eremothecium sinecaudum	45286	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Clavicipitaceae	Pochonia	Pochonia chlamydosporia	Pochonia chlamydosporia 170	1380566	1.0
+Eukaryota	Ascomycota	Sordariomycetes	Glomerellales	Glomerellaceae	Colletotrichum	Colletotrichum higginsianum	Colletotrichum higginsianum IMI 349063	759273	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Saccharomyces	Saccharomyces eubayanus	Saccharomyces eubayanus	1080349	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium oxysporum	Fusarium oxysporum f. sp. lycopersici 4287	426428	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Trichomonascaceae	Sugiyamaella	Sugiyamaella lignohabitans	Sugiyamaella lignohabitans	796027	4.3967
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium verticillioides	Fusarium verticillioides 7600	334819	3.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Debaryomycetaceae	Candida	Candida albicans	Candida albicans SC5314	237561	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Kazachstania	Kazachstania naganishii	Kazachstania naganishii CBS 8797	1071383	0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Kluyveromyces	Kluyveromyces marxianus	Kluyveromyces marxianus DMKU3-1042	1003335	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium fujikuroi	Fusarium fujikuroi IMI 58289	1279085	0
+Eukaryota	Ascomycota	Dothideomycetes	Mycosphaerellales	Mycosphaerellaceae	Cercospora	Cercospora beticola	Cercospora beticola	122368	0
+Eukaryota	Basidiomycota	Tremellomycetes	Tremellales	Cryptococcaceae	Cryptococcus	Cryptococcus neoformans	Cryptococcus neoformans var. neoformans JEC21	214684	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium venenatum	Fusarium venenatum	56646	0
+Eukaryota	Basidiomycota	Malasseziomycetes	Malasseziales	Malasseziaceae	Malassezia	Malassezia restricta	Malassezia restricta	76775	2.29032
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Pichiaceae	Pichia	Pichia kudriavzevii	Pichia kudriavzevii	4909	4.0
+Eukaryota	Basidiomycota	Ustilaginomycetes	Ustilaginales	Ustilaginaceae	Sporisorium	Sporisorium graminicola	Sporisorium graminicola	280036	0
+Eukaryota	Ascomycota	Sordariomycetes	Magnaporthales	Pyriculariaceae	Pyricularia	Pyricularia pennisetigena	Pyricularia pennisetigena	1578925	9.0
+Eukaryota	Ascomycota	Sordariomycetes	Magnaporthales	Pyriculariaceae	Pyricularia	Pyricularia grisea	Pyricularia grisea	148305	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Saccharomyces	Saccharomyces paradoxus	Saccharomyces paradoxus	27291	1.0
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Trichocomaceae	Talaromyces	Talaromyces rugulosus	Talaromyces rugulosus	121627	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Torulaspora	Torulaspora globosa	Torulaspora globosa	48254	3.38251
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycetaceae	Zygotorulaspora	Zygotorulaspora mrakii	Zygotorulaspora mrakii	42260	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Pichiaceae	Brettanomyces	Brettanomyces nanus	Brettanomyces nanus	13502	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Ophiocordycipitaceae	Drechmeria	Drechmeria coniospora	Drechmeria coniospora	98403	12.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Pichiaceae	Brettanomyces	Brettanomyces bruxellensis	Brettanomyces bruxellensis	5007	0
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus flavus	Aspergillus flavus NRRL3357	332952	4.36586
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus luchuensis	Aspergillus luchuensis	1069201	12.76596
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus puulaauensis	Aspergillus puulaauensis	1220207	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Clavicipitaceae	Ustilaginoidea	Ustilaginoidea virens	Ustilaginoidea virens	1159556	0
+Eukaryota	Basidiomycota	Agaricomycetes	Agaricales	Marasmiaceae	Marasmius	Marasmius oreades	Marasmius oreades	181124	0
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus chevalieri	Aspergillus chevalieri	182096	6.95046
+Eukaryota	Basidiomycota	Agaricomycetes	Cantharellales	Ceratobasidiaceae	Rhizoctonia	Rhizoctonia solani	Rhizoctonia solani	456999	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium musae	Fusarium musae	1042133	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium poae	Fusarium poae	36050	1.0
+Eukaryota	Ascomycota	Saccharomycetes	Saccharomycetales	Saccharomycodaceae	Saccharomycodes	Saccharomycodes ludwigii	Saccharomycodes ludwigii	36035	0
+Eukaryota	Basidiomycota	Agaricomycetes	Agaricales	Strophariaceae	Psilocybe	Psilocybe cubensis	Psilocybe cubensis	181762	0
+Eukaryota	Ascomycota	Dothideomycetes	Mycosphaerellales	Mycosphaerellaceae	Fulvia	Fulvia fulva	Fulvia fulva	5499	3.0
+Eukaryota	Basidiomycota	Pucciniomycetes	Pucciniales	Pucciniaceae	Puccinia	Puccinia striiformis	Puccinia striiformis f. sp. tritici	168172	1.00782
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Ophiocordycipitaceae	Purpureocillium	Purpureocillium takamizusanense	Purpureocillium takamizusanense	2060973	3.0
+Eukaryota	Ascomycota	Sordariomycetes	Glomerellales	Glomerellaceae	Colletotrichum	Colletotrichum lupini	Colletotrichum lupini	145971	2.06026
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Penicillium	Penicillium oxalicum	Penicillium oxalicum	69781	27.539
+Eukaryota	Ascomycota	Eurotiomycetes	Eurotiales	Aspergillaceae	Aspergillus	Aspergillus nidulans	Aspergillus nidulans FGSC A4	227321	0
+Eukaryota	Ascomycota	Sordariomycetes	Hypocreales	Nectriaceae	Fusarium	Fusarium keratoplasticum	Fusarium keratoplasticum	1328300	7.0
+Eukaryota	Basidiomycota	Tremellomycetes	Tremellales	Cryptococcaceae	Cryptococcus	Cryptococcus neoformans	Cryptococcus neoformans var. neoformans B-3501A	283643	0
