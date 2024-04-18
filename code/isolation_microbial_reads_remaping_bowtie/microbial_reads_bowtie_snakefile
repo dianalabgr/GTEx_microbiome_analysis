@@ -1,0 +1,56 @@
+#Read the file with the names of the samples that we will use 
+with open('samples.txt') as fh:
+	samples = [line.strip() for line in fh]
+	samples=samples
+	print(samples)
+
+#rule for making all outputs
+rule rule_all:
+	input:
+		expand("bowtie_folder/bowtie_fastq/{sample}_1.fastq.gz",sample=samples),
+		expand("bowtie_folder/bowtie_fastq/{sample}_2.fastq.gz",sample=samples)
+		
+	
+#rule take the microbial bam file and make it fastq
+rule microbial:
+	input: 
+		BAM="microbialReads_bypass2/pufferfish_mapped/{sample}_microbial.bam"
+	output:
+		SORTED_BAM="bowtie_folder/fastq/{sample}_microbial_sorted.bam",
+		FQ1="bowtie_folder/fastq/{sample}_microbial_sorted_1.fq",
+		FQ2="bowtie_folder/fastq/{sample}_microbial_sorted_2.fq"
+	shell:
+		r"""
+		samtools sort -n {input} -o {output.SORTED_BAM}
+		/mnt/raid1/argis/tools/bedtools/bedtools2/bin/bedtools bamtofastq -i {output.SORTED_BAM} -fq {output.FQ1} -fq2 {output.FQ2}
+		"""
+
+#rule run bowtie 
+rule bowtie:
+	input:
+		FQ1="bowtie_folder/fastq/{sample}_microbial_sorted_1.fq",
+		FQ2="bowtie_folder/fastq/{sample}_microbial_sorted_2.fq"
+	output:
+		LOG="bowtie_folder/logs/{sample}_bowtie_logs.txt",
+		FQ1="bowtie_folder/bowtie_fastq/{sample}_1.fastq",
+		FQ2="bowtie_folder/bowtie_fastq/{sample}_2.fastq"
+	shell: 
+		r"""
+		bowtie2 --very-sensitive -x /mnt/raid1/argis/tools/bowtie2_reference_database/GCF_009914755.1/CHM13v2.btindex -1 {input.FQ1} -2 {input.FQ2} --un-conc {wildcards.sample}.fq  -S {wildcards.sample}.temp 2>&1 | tee {output.LOG}
+		rm {wildcards.sample}.temp
+		mv {wildcards.sample}.1.fq  {output.FQ1}
+		mv {wildcards.sample}.2.fq  {output.FQ2}
+		"""
+rule gzip: 
+	input:
+		FQ1="bowtie_folder/bowtie_fastq/{sample}_1.fastq",
+		FQ2="bowtie_folder/bowtie_fastq/{sample}_2.fastq"
+	output:
+		FQ1ZIP="bowtie_folder/bowtie_fastq/{sample}_1.fastq.gz",
+		FQ2ZIP="bowtie_folder/bowtie_fastq/{sample}_2.fastq.gz"
+	shell:
+		r"""
+		gzip {input.FQ1} 
+		gzip {input.FQ2}
+		"""
+
