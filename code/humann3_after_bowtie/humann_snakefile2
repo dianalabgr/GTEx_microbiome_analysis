@@ -1,0 +1,37 @@
+#Read the file with the names of the samples that we will use 
+with open('samples.txt') as fh:
+	samples = [line.strip() for line in fh]
+	print(samples)
+
+#rule for making all outputs
+rule rule_all:
+	input:
+		expand("humann_uniref90_microbialReads_bypass2/{sample}_genefamilies.tsv",sample=samples),
+		expand("humann_uniref90_microbialReads_bypass2/{sample}_pathabundance.tsv",sample=samples),
+		expand("humann_uniref90_microbialReads_bypass2/{sample}_pathcoverage.tsv",sample=samples),
+		expand("fastq_files/{sample}.fastq",sample=samples)
+	
+	
+#rule run hummann against uniref90 
+rule humann:
+	input: 
+		R1="../bowtie_folder/bowtie_fastq/{sample}_1.fastq.gz",
+		R2="../bowtie_folder/bowtie_fastq/{sample}_2.fastq.gz"
+	output:
+		fastq="fastq_files/{sample}.fastq",
+		gene="humann_uniref90_microbialReads_bypass2/{sample}_genefamilies.tsv",
+		pathabundance="humann_uniref90_microbialReads_bypass2/{sample}_pathabundance.tsv",
+		pathcoverage="humann_uniref90_microbialReads_bypass2/{sample}_pathcoverage.tsv"
+	threads : 5
+	shell: 
+		r"""
+		zcat {input.R1} {input.R2} > {output.fastq}
+		humann --input  {output.fastq} -v --output ./humann_uniref90_microbialReads_bypass2/ --bypass-nucleotide-index --bypass-nucleotide-search --threads {threads}  --output-format tsv --protein-database /mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/humann/databases/uniref/ 
+		"""
+		
+#/mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/humann
+
+#--nucleotide-database /mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/chocophlan/full_chocophlan_index/bowtie2_index
+
+
+
