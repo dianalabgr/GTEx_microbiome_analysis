@@ -1,5 +1,5 @@
 #Read the file with the names of the samples that we will use 
-with open('sampleNames.txt') as fh:
+with open('samples.txt') as fh:
 	samples = [line.strip() for line in fh]
 	print(samples)
 
