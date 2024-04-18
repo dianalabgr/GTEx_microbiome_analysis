@@ -14,7 +14,7 @@ rule rule_all:
 rule kaiju:
 	input: 
 		R1="../QCed/QCed_{sample}_1.fastq.gz",
-		R2="../QCed_{sample}_2.fastq.gz"
+		R2="../QCed/QCed_{sample}_2.fastq.gz"
 	output:
 		TXT="temp/kaiju_QCed_{sample}.txt",
 		SUMMARY_SPECIES="summary/kaiju_summary_species_{sample}.tsv",
