@@ -26,12 +26,10 @@ rule humann:
 	shell: 
 		r"""
 		zcat {input.R1} {input.R2} > {output.fastq}
-		humann --input  {output.fastq} -v --output ./humann_uniref90_microbialReads_bypass2/ --bypass-nucleotide-index --bypass-nucleotide-search --threads {threads}  --output-format tsv --protein-database /mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/humann/databases/uniref/ 
+		humann --input  {output.fastq} -v --output ./humann_uniref90_microbialReads_bypass2/ --bypass-nucleotide-index --bypass-nucleotide-search --threads {threads}  --output-format tsv --protein-database /mnt/raid1/humann/databases/uniref/ 
 		"""
 		
-#/mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/humann
 
-#--nucleotide-database /mnt/raid1/armen/Schinos/META-ANALYSIS/Databases/chocophlan/full_chocophlan_index/bowtie2_index
 
 
 
