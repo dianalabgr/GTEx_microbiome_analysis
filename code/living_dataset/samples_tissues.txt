@@ -1,0 +1,173 @@
+Run	Experimental_Factor:_organism_part (exp)
+ERR315327	liver
+ERR315372	skin
+ERR315401	skin
+ERR315414	liver
+ERR315448	spleen
+ERR315451	liver
+ERR315460	skin
+ERR315463	liver
+ERR315464	skin
+ERR315494	kidney
+ERR315348	colon
+ERR315358	thyroid
+ERR315375	placenta
+ERR315394	liver
+ERR315422	thyroid
+ERR315473	spleen
+ERR315328	heart
+ERR315329	lymph node
+ERR315330	prostate
+ERR315331	heart
+ERR315335	adrenal gland
+ERR315336	placenta
+ERR315337	thyroid
+ERR315338	spleen
+ERR315339	skin
+ERR315340	prostate
+ERR315341	lung
+ERR315342	adipose tissue
+ERR315343	adipose tissue
+ERR315344	small intestine
+ERR315350	testis
+ERR315351	testis
+ERR315352	testis
+ERR315353	lung
+ERR315354	prostate
+ERR315355	bladder
+ERR315356	heart
+ERR315359	prostate
+ERR315360	gall bladder
+ERR315361	endometrium
+ERR315362	esophagus
+ERR315373	lymph node
+ERR315378	adipose tissue
+ERR315379	stomach
+ERR315402	animal ovary
+ERR315403	colon
+ERR315404	bone marrow
+ERR315405	spleen
+ERR315408	small intestine
+ERR315409	small intestine
+ERR315410	prostate
+ERR315411	esophagus
+ERR315412	thyroid
+ERR315413	heart
+ERR315426	lymph node
+ERR315427	gall bladder
+ERR315428	thyroid
+ERR315429	pancreas
+ERR315430	heart
+ERR315431	adipose tissue
+ERR315432	cerebral cortex
+ERR315433	endometrium
+ERR315434	esophagus
+ERR315440	lymph node
+ERR315441	lymph node
+ERR315442	duodenum
+ERR315443	kidney
+ERR315444	lung
+ERR315445	duodenum
+ERR315446	testis
+ERR315447	bladder
+ERR315449	salivary gland
+ERR315450	adrenal gland
+ERR315452	adrenal gland
+ERR315453	bladder
+ERR315454	appendix
+ERR315455	cerebral cortex
+ERR315456	testis
+ERR315459	salivary gland
+ERR315461	duodenum
+ERR315462	colon
+ERR315465	appendix
+ERR315466	pancreas
+ERR315467	stomach
+ERR315468	kidney
+ERR315469	bone marrow
+ERR315470	gall bladder
+ERR315471	lymph node
+ERR315482	animal ovary
+ERR315483	thyroid
+ERR315484	colon
+ERR315485	stomach
+ERR315486	bone marrow
+ERR315487	lung
+ERR315488	lymph node
+ERR315489	esophagus
+ERR315490	endometrium
+ERR315491	thyroid
+ERR315492	testis
+ERR315493	lymph node
+ERR315325	salivary gland
+ERR315326	lung
+ERR315332	adipose tissue
+ERR315333	bone marrow
+ERR315334	bladder
+ERR315345	appendix
+ERR315346	lung
+ERR315347	gall bladder
+ERR315349	gall bladder
+ERR315357	colon
+ERR315363	thyroid
+ERR315364	small intestine
+ERR315365	prostate
+ERR315366	appendix
+ERR315367	heart
+ERR315368	endometrium
+ERR315369	stomach
+ERR315370	bladder
+ERR315371	lymph node
+ERR315374	placenta
+ERR315376	skin
+ERR315377	placenta
+ERR315380	animal ovary
+ERR315381	small intestine
+ERR315382	salivary gland
+ERR315383	kidney
+ERR315384	heart
+ERR315385	adrenal gland
+ERR315386	endometrium
+ERR315387	lymph node
+ERR315388	small intestine
+ERR315389	heart
+ERR315390	lymph node
+ERR315391	testis
+ERR315392	adrenal gland
+ERR315393	lymph node
+ERR315395	bone marrow
+ERR315396	bone marrow
+ERR315397	thyroid
+ERR315398	esophagus
+ERR315399	placenta
+ERR315400	colon
+ERR315406	bone marrow
+ERR315407	prostate
+ERR315415	testis
+ERR315416	spleen
+ERR315417	adrenal gland
+ERR315418	salivary gland
+ERR315419	small intestine
+ERR315420	salivary gland
+ERR315421	bladder
+ERR315423	small intestine
+ERR315424	lung
+ERR315425	bone marrow
+ERR315435	heart
+ERR315436	pancreas
+ERR315437	appendix
+ERR315438	endometrium
+ERR315439	lung
+ERR315457	duodenum
+ERR315458	animal ovary
+ERR315472	esophagus
+ERR315474	gall bladder
+ERR315475	lymph node
+ERR315476	placenta
+ERR315477	cerebral cortex
+ERR315478	placenta
+ERR315479	pancreas
+ERR315480	gall bladder
+ERR315481	appendix
+ERR315495	endometrium
+

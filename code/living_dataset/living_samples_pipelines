@@ -1,0 +1,173 @@
+#Download data from https://www.ncbi.nlm.nih.gov/Traces/study/?acc=%09PRJEB4337&o=acc_s%3Aa
+#for i in ${samples[@]};do echo $i; prefetch $i; cd $i; fasteq-dum *.sra; rm *.sra;cd ..;done
+
+#Snakemake file for the pipeline 
+#Read the file with the names of the samples that we will use 
+with open('samples_tissues.txt') as fh:
+	lines = [line.strip() for line in fh]
+	samples=[]
+	for l in lines: 
+		samples.append(l.split(',')[0])
+	print(samples)
+	
+#rule for making all outputs
+rule rule_all:
+	input:
+		expand("unmappedFastQ/{sample}_unmapped_1.fq",sample=samples),
+		expand("unmappedFastQ/{sample}_unmapped_2.fq",sample=samples),
+		expand("logs/{sample}.mapped_counts.log",sample=samples),
+		expand("logs/{sample}.unmapped_counts.log",sample=samples),
+		expand("logs/{sample}.QCed_counts.log",sample=samples),
+		expand("humann_uniref90_microbialReads_bypass2/pufferfish_mapped/{sample}_microbial.fasta",sample=samples),
+		expand("logs/{sample}.microbial.log", sample=samples),
+		expand("bowtie_folder/bowtie_fastq/{sample}_1.fastq.gz",sample=samples),
+		expand("bowtie_folder/bowtie_fastq/{sample}_2.fastq.gz",sample=samples)
+		
+#Rule to map using STAR
+rule map_star:
+	input:
+		f1="samples/{sample}/{sample}_1.fastq",
+		f2="samples/{sample}/{sample}_2.fastq"
+	output:
+		"mapped/{sample}_Aligned.sortedByCoord.out.bam"
+	threads: 5
+	shell:
+		"""
+		/mnt/raid1/argis/tools/STAR/STAR-2.7.10b/bin/Linux_x86_64/STAR --genomeDir /mnt/raid1/argis/tools/STAR/STAR-2.7.10b/star_genome/ --runThreadN 5 --readFilesIn {input.f1} {input.f2} --outFileNamePrefix {wildcards.sample}_ --outSAMtype BAM SortedByCoordinate --outSAMunmapped Within --outSAMattributes Standard
+		mv {wildcards.sample}_Aligned.sortedByCoord.out.bam {output}
+		rm {input.f1}
+		rm {input.f2}
+		"""
+
+#Rule to keep the unmapped
+rule keep_unmapped:
+	input:
+		"mapped/{sample}_Aligned.sortedByCoord.out.bam"
+	output:
+		bam="unmapped/{sample}.unmapped.bam",
+		log_mapped="logs/{sample}.mapped_counts.log",
+		log_unmapped="logs/{sample}.unmapped_counts.log",
+	shell:
+		"""
+		samtools view -b -f 12 -F 256 {input} > {output.bam}
+		txt1=$(samtools fasta {input} | grep ">" | wc -l)
+		echo {wildcards.sample} $txt1 > {output.log_mapped}
+		txt2=$(samtools fasta {output.bam} | grep ">" | wc -l)
+		echo {wildcards.sample} $txt2 > {output.log_unmapped}
+		rm {input}
+		"""
+
+#Rule to make the bam file fastq files
+rule bam_to_fastq:
+    input:
+        "unmapped/{sample}.unmapped.bam"
+    output:
+        R1="unmappedFastQ/{sample}_unmapped_1.fq",
+        R2="unmappedFastQ/{sample}_unmapped_2.fq"
+    shell:
+        r"""
+        samtools sort -n {input} -o "unmappedFastQ/"{wildcards.sample}"_unmapped_sorted.bam"
+        /mnt/raid1/argis/tools/bedtools/bedtools2/bin/bamToFastq -i "unmappedFastQ/"{wildcards.sample}"_unmapped_sorted.bam" -fq {output.R1} -fq2 {output.R2}
+        rm unmappedFastQ/"{wildcards.sample}"_unmapped_sorted.bam
+        rm {input}
+        """
+
+#Rule to quality trimming the reads 
+rule trimming:
+    input:
+        R1="unmappedFastQ/{sample}_unmapped_1.fq",
+        R2="unmappedFastQ/{sample}_unmapped_2.fq"
+    output:
+        R1="QCed/QCed_{sample}_1.fastq.gz",
+        R2="QCed/QCed_{sample}_2.fastq.gz",
+        log_QCed="logs/{sample}.QCed_counts.log"
+    shell:
+        r"""
+        atropos -o {output.R1} -p {output.R2} -pe1 {input.R1} -pe2 {input.R2} -q 15,15 --minimum-length 35 -a GATCGGAAGAGC -A GATCGGAAGAGC --report-file "QCed/Atropos_"{wildcards.sample}"_log.txt"
+        txt2=$(($(cat {input} | wc -l)/2))
+		echo {wildcards.sample} $txt2 > {output.log_QCed}
+        rm {input.R1}
+        rm {input.R2}
+        """
+
+#Rule to run fastqc for QCed reads
+rule fastqc_afterQC:
+    input: 
+        R1="QCed/QCed_{sample}_1.fastq.gz",
+        R2="QCed/QCed_{sample}_2.fastq.gz"
+    output:
+        "fastqc_afterQC/QCed_{sample}_1_fastqc.html",
+        "fastqc_afterQC/QCed_{sample}_2_fastqc.html"
+    shell:
+        """
+        export _JAVA_OPTIONS=-Djavax.accessibility.assistive_technologies=
+        fastqc {input.R1} {input.R2} -o fastqc_afterQC
+        """
+
+#rule find the mapped reads of agamemnon
+rule pufferfish_rule:
+	input: 
+		R1="./QCed/QCed_{sample}_1.fastq.gz",
+		R2="./QCed/QCed_{sample}_2.fastq.gz"
+	output:
+		BAM="humann_uniref90_microbialReads_bypass2/pufferfish_mapped/{sample}_mapped.bam",
+		MICROBIAL_BAM="humann_uniref90_microbialReads_bypass2/pufferfish_mapped/{sample}_microbial.bam",
+		MICROBIAL_FASTA="humann_uniref90_microbialReads_bypass2/pufferfish_mapped/{sample}_microbial.fasta",
+		LOG="logs/{sample}.microbial.log"
+	threads : 2
+	shell:
+		r"""
+		export LD_LIBRARY_PATH=/mnt/raid1/argis/tools/agamemnon/agamemnon/binaries/pufferfish/external/install/lib
+		/mnt/raid1/argis/tools/agamemnon/agamemnon/binaries/pufferfish/pufferfish align -i /mnt/raid1/argis/tools/agamemnon/agamemnon/Refseq_argis3/ --mate1 {input.R1} --mate2 {input.R2} --threads {threads} --coverageScoreRatio 0.5 -o {output.BAM} --noOrphans 2> {output.LOG} 
+		samtools view -bS -F 4 {output.BAM} > {output.MICROBIAL_BAM}
+		samtools fasta {output.MICROBIAL_BAM} > {output.MICROBIAL_FASTA}
+		txt3=$(($(cat {output.MICROBIAL_FASTA}| wc -l)/2))
+		echo {wildcards.sample} $txt3 > {output.LOG}
+		"""
+
+	
+#rule take the microbial bam file and make it fastq
+rule microbial:
+	input: 
+		BAM="humann_uniref90_microbialReads_bypass2/pufferfish_mapped/{sample}_microbial.bam"
+	output:
+		SORTED_BAM="bowtie_folder/fastq/{sample}_microbial_sorted.bam",
+		FQ1="bowtie_folder/fastq/{sample}_microbial_sorted_1.fq",
+		FQ2="bowtie_folder/fastq/{sample}_microbial_sorted_2.fq"
+	shell:
+		r"""
+		samtools sort -n {input} -o {output.SORTED_BAM}
+		/mnt/raid1/argis/tools/bedtools/bedtools2/bin/bedtools bamtofastq -i {output.SORTED_BAM} -fq {output.FQ1} -fq2 {output.FQ2}
+		"""
+
+#rule run bowtie 
+rule bowtie:
+	input:
+		FQ1="bowtie_folder/fastq/{sample}_microbial_sorted_1.fq",
+		FQ2="bowtie_folder/fastq/{sample}_microbial_sorted_2.fq"
+	output:
+		LOG="bowtie_folder/logs/{sample}_bowtie_logs.txt",
+		FQ1="bowtie_folder/bowtie_fastq/{sample}_1.fastq",
+		FQ2="bowtie_folder/bowtie_fastq/{sample}_2.fastq"
+	shell: 
+		r"""
+		bowtie2 --very-sensitive -x /mnt/raid1/argis/tools/bowtie2_reference_database/GCF_009914755.1/CHM13v2.btindex -1 {input.FQ1} -2 {input.FQ2} --un-conc {wildcards.sample}.fq  -S {wildcards.sample}.temp 2>&1 | tee {output.LOG}
+		rm {wildcards.sample}.temp
+		mv {wildcards.sample}.1.fq  {output.FQ1}
+		mv {wildcards.sample}.2.fq  {output.FQ2}
+		"""
+rule gzip: 
+	input:
+		FQ1="bowtie_folder/bowtie_fastq/{sample}_1.fastq",
+		FQ2="bowtie_folder/bowtie_fastq/{sample}_2.fastq"
+	output:
+		FQ1ZIP="bowtie_folder/bowtie_fastq/{sample}_1.fastq.gz",
+		FQ2ZIP="bowtie_folder/bowtie_fastq/{sample}_2.fastq.gz"
+	shell:
+		r"""
+		gzip {input.FQ1} 
+		gzip {input.FQ2}
+		"""
+
+	
+

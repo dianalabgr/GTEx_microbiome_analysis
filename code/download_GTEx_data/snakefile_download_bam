@@ -1,0 +1,44 @@
+#Read the file with the names of the samples that we will download 
+with open('files_objectID_new.txt') as fh:
+	lines = [line.strip() for line in fh]
+	samples_dictionary={}
+#	print(lines)
+	for l in lines: 
+		samples_dictionary[l.split(' ')[1]]=l.split(' ')[0]
+#	print(samples_dictionary.keys())
+	
+#rule for making all outputs
+#Keep the unmapped reads and the reads of EBV
+rule rule_all:
+	input:
+		expand("unmapped/{sample}.unmapped.bam",sample=samples_dictionary.keys()),
+		expand("EBV/{sample}_chrEBV.fastq",sample=samples_dictionary.keys())
+		
+
+
+#Concatenate the above rules in order not to have so big files
+rule rule_concatenate:
+	params:
+		object=lambda wildcards: samples_dictionary[wildcards.sample],
+		EBV_bam="EBV/{sample}_chrEBV.bam",
+		downloaded_bam="{sample}.Aligned.sortedByCoord.out.patched.md.bam"
+	output: 
+		unmapped_bam="unmapped/{sample}.unmapped.bam",
+		EBV_fq="EBV/{sample}_chrEBV.fastq"
+	shell:
+		"""
+		/mnt/raid1/argis/tools/gen3_client/gen3-client download-single --profile=GTEX_microbiome --guid={params.object} --protocol=s3 --no-prompt --skip-completed
+		samtools index {params.downloaded_bam}
+		samtools view -b -f 12 -F 256 {params.downloaded_bam} > {output.unmapped_bam}
+		samtools view -b {params.downloaded_bam} chrEBV > {params.EBV_bam}
+		samtools sort -n {params.EBV_bam} -o {params.EBV_bam}_sorted.bam
+		samtools fastq {params.EBV_bam}_sorted.bam -o {output.EBV_fq}
+#		/mnt/raid1/argis/tools/bedtools/bedtools2/bin/bedtools bamtofastq -i {params.EBV_bam}_sorted.bam -fq {output.EBV_fq}
+		rm {params.EBV_bam}
+		rm {params.EBV_bam}_sorted.bam
+		rm {params.downloaded_bam}
+		rm {params.downloaded_bam}".bai"
+		"""
+		
+	
+
