@@ -1,0 +1,41 @@
+#Select how many pertubations should be done
+number_of_pertubations=100
+tests=[]
+for n in range(1,number_of_pertubations+1,1): 
+		tests.append(n)
+		
+#rule for making all outputs
+rule rule_all:
+	input:
+		#expand("contamination/test_{test}_contamination.csv",test=tests),
+		#expand("results/test_{test}_results.csv",test=tests)
+		expand("contamination/test_{test}_contamination.csv",test=tests)
+	shell:
+		"""
+		if [ ! -d "results" ]; then
+			mkdir -p "results"
+		fi
+		"""
+
+
+#Create the contamination file
+rule rule_create_contaminate_file:
+	output: 
+		"contamination/test_{test}_contamination.csv"
+	shell:
+		"""
+		python contamination.py {output}
+		"""
+
+#Create the ML model output file
+#rule rule_create_ml_file:
+#	input:
+#		"contamination/test_{test}_contamination.csv"
+#	output: 
+#		"results/test_{test}_results.csv"
+#	shell:
+#		"""
+#		Rscript contamination_gbm_model_contamination_afterVoom.R {input} {output}
+#		cat {output} | tail -n +2 >> results/cumulative_results.csv
+#		"""
+
