@@ -83,7 +83,6 @@ all_sub=all_sub[,which(tolower(metadata2$tissue_type)%in%c("heart","liver", "bla
 
 dim(all_sub)
 dim(metadata2)
-#metadata2=metadata2[which(metadata2$tissue_type%in%c("Liver","Lung","Pancreas","Brain","Heart","Bladder","Kidney","Breast","Small Intestine")),]
 metadata2=metadata2[which(tolower(metadata2$tissue_type)%in%c("heart","liver", "bladder", "muscle",
                                                               "stomach","colon","testis", "blood")),]
 table(metadata2$tissue_type)
@@ -126,7 +125,7 @@ core=unique(core)
 #Parallel computing
 library(parallel)
 library(doMC) # for parallel computing
-numCores <- detectCores()
+numCores = detectCores()
 #Set how many cores the script will use (10 cores)
 registerDoMC(cores=10)
 
@@ -141,11 +140,11 @@ for (tissue in unique(metadata2$tissue_type)) {
     ####################################################################################################################################
     ################################## Split the datasets to train and testing dataset 
     set.seed(42)
-    index <- createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
-    trainX <- all_sub[,index]
-    metadata_train <- metadata2[index,]
-    testX <- all_sub[,-index]
-    metadata_test <- metadata2[-index,]
+    index = createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
+    trainX = all_sub[,index]
+    metadata_train = metadata2[index,]
+    testX = all_sub[,-index]
+    metadata_test = metadata2[-index,]
     dim(trainX)
     dim(testX)
     table(metadata_train$tissue_type)
@@ -165,7 +164,7 @@ for (tissue in unique(metadata2$tissue_type)) {
     residuals_train2=residuals_train[core,]
     
     
-    #Train dataset
+    #Test dataset
     library(metagenomeSeq)
     metaSeqObject = newMRexperiment(testX) 
     metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
@@ -186,34 +185,34 @@ for (tissue in unique(metadata2$tissue_type)) {
   samplingStrategy = "up"
   
   rownames(metadata_train) = metadata_train$specimen_id
-  TypeComparison <- metadata_train$tissue_type
+  TypeComparison = metadata_train$tissue_type
   TypeString = tissue
   #  TypeString = "Liver"
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                  levels = c(TypeString, "OtherType"))
   metadata_train$TypeComparison=TypeComparisonFactor
-  mlDataY <- metadata_train
-  mlDataX <- data_trans2[rownames(mlDataY),]
+  mlDataY = metadata_train
+  mlDataX = data_trans2[rownames(mlDataY),]
   dim(mlDataY)[1] == dim(mlDataX)[1] # Sanity check
   
-  trainX <- mlDataX
-  trainY <- mlDataY$TypeComparison
+  trainX = mlDataX
+  trainY = mlDataY$TypeComparison
   
-  testX <- as.data.frame(t(residuals_test2))
-  TypeComparison <- metadata_test$tissue_type
+  testX = as.data.frame(t(residuals_test2))
+  TypeComparison = metadata_test$tissue_type
   TypeString = tissue
   #  TypeString = "Liver"
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                  levels = c(TypeString, "OtherType"))
   metadata_test$TypeComparison=TypeComparisonFactor
   testY=metadata_test$TypeComparison
-  refactoredTrainY <- factor(gsub('([[:punct:]])|\\s+','',trainY))
-  refactoredTestY <- factor(gsub('([[:punct:]])|\\s+','',testY))
+  refactoredTrainY = factor(gsub('([[:punct:]])|\\s+','',trainY))
+  refactoredTestY = factor(gsub('([[:punct:]])|\\s+','',testY))
   
-  refactoredTrainY <- relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
-  refactoredTestY <- relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+  refactoredTrainY = relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+  refactoredTestY = relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
   
-  ctrl <- trainControl(method = "repeatedcv",
+  ctrl = trainControl(method = "repeatedcv",
                        number = 2,
                        repeats = 1,
                        summaryFunction = twoClassSummary,
@@ -224,17 +223,17 @@ for (tissue in unique(metadata2$tissue_type)) {
   
   
   # Build up-sampled model
-  ctrl$sampling <- samplingStrategy
+  ctrl$sampling = samplingStrategy
   print("Now training model with up sampling...")
   
-  defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
+  defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
                                  n.trees = floor((1:3) * 50),
                                  shrinkage = 0.1,
                                  n.minobsinnode = 3)
   #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
   #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
   
-  mlModel <- train(x = trainX,
+  mlModel = train(x = trainX,
                    y = refactoredTrainY,
                    method = "gbm",
                    preProcess = c("scale","center"),
@@ -242,9 +241,9 @@ for (tissue in unique(metadata2$tissue_type)) {
                    metric = "ROC",
                    tuneGrid = defaultGBMGrid)
   
-  predProbs <- as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
-  fg <- predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
-  bg <- predProbs[refactoredTestY == "OtherType"]
+  predProbs = as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
+  fg = predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
+  bg = predProbs[refactoredTestY == "OtherType"]
   
   roc_GTEX=roc.curve(scores.class0 = fg, scores.class1 = bg, curve = T)
   pr_GTEX=pr.curve(scores.class0 = fg, scores.class1 = bg, curve = T, rand.compute=T)
@@ -254,7 +253,7 @@ for (tissue in unique(metadata2$tissue_type)) {
   
   #Feature importance analysis
   feauter_variables= varImp(mlModel,scale=TRUE)[["importance"]]
-  feauter_variables$Overall <- feauter_variables$Overall / sum(feauter_variables$Overall)
+  feauter_variables$Overall = feauter_variables$Overall / sum(feauter_variables$Overall)
   feauter_variables$microbiomes=rownames(feauter_variables)
   feauter_variables=feauter_variables[order(feauter_variables$Overall,decreasing=TRUE),]
   write.csv(feauter_variables,file=paste("./feauture_importance_analysis/CSSOnly_FeatureImportance_Filter10Percent_",tissue,".csv",sep=""))
