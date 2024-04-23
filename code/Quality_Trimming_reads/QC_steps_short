@@ -7,7 +7,12 @@ with open('samples.txt') as fh:
 rule rule_all:
     input: 
         expand("QCed/QCed_{sample}_1.fastq.gz", sample=samples),
-        expand("QCed/QCed_{sample}_2.fastq.gz", sample=samples)       
+        expand("QCed/QCed_{sample}_2.fastq.gz", sample=samples),
+        expand("fastqc_afterQC/QCed_{sample}_1_fastqc.html", sample=samples),
+        expand("fastqc_afterQC/QCed_{sample}_2_fastqc.html", sample=samples),
+        expand("logs_unmapped/{sample}.unmapped.log", sample=samples),
+        expand("logs_QC/{sample}.QCed.log", sample=samples)
+           
 
 #Rule to make the bam file fastq files
 rule bam_to_fastq:
@@ -40,4 +45,42 @@ rule trimming:
         rm {input.R2}
         """
 
+#Rule to run fastqc for QCed reads
+rule fastqc_afterQC:
+    input: 
+        R1="QCed/QCed_{sample}_1.fastq.gz",
+        R2="QCed/QCed_{sample}_2.fastq.gz"
+    output:
+        "fastqc_afterQC/QCed_{sample}_1_fastqc.html",
+        "fastqc_afterQC/QCed_{sample}_2_fastqc.html"
+    shell:
+        """
+        export _JAVA_OPTIONS=-Djavax.accessibility.assistive_technologies=
+        fastqc {input.R1} {input.R2} -o fastqc_afterQC
+        """
+  
+#Rule to find the number of unmapped
+rule find_unmapped:
+    input:
+        "../download_samples/unmapped/{sample}.unmapped.bam"
+    output:
+        "logs_unmapped/{sample}.unmapped.log"
+    shell:
+        r"""
+		txt1=$(samtools fasta {input} | grep ">" | wc -l)
+		echo {wildcards.sample} $txt1 > {output}
+        """
+        
+
+#Rule to find the number of QCed reads
+rule find_QCed:
+    input:
+        "QCed/QCed_{sample}_1.fastq.gz",
+    output:
+        "logs_QC/{sample}.QCed.log"
+    shell:
+        r"""
+		txt2=$(($(zcat {input} | wc -l)/2))
+		echo {wildcards.sample} $txt2 > {output}
+        """
 
