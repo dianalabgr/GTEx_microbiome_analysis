@@ -49,7 +49,7 @@ library(ggsci)
 library(microbiomeMarker)
 library(metagenomeSeq)
 
-numCores <- detectCores()
+numCores = detectCores()
 #Set how many cores the script will use (10 cores)
 registerDoMC(cores=10)
 
@@ -124,7 +124,6 @@ cumulative_results=data.frame(matrix(nrow=1, ncol=5))
 colnames(cumulative_results)=c("tissue","factor","RMSE","Rsquared","MAE")
 
 
-#for (tissue in unique(metadata3$tissue_type)) {
 for (tissue in tissues) {
   #tissue="Colon"
   print(tissue)
@@ -146,96 +145,96 @@ for (tissue in tissues) {
   }else {
   ####################################################################################################################################
   ################################## Split the datasets to train and testing dataset 
-  set.seed(42)
-  #Create the variable to save the results 
-  permutation_results=data.frame(matrix(nrow=1, ncol=4))
-  colnames(permutation_results)=c("Iteration", 'RMSE', "Rsquared", "MAE")
-  for (i in seq(1,100,by=1)) {
- # index <- createDataPartition(metadata4$hypertension_history, p = 0.8, list = FALSE)
-  index <- createDataPartition(metadata4[,"age_value"], p = 0.7, list = FALSE)
-  trainX <- all_sub4[,index]
-  metadata_train <- metadata4[index,]
-  testX <- all_sub4[,-index]
-  metadata_test <- metadata4[-index,]
-  dim(trainX)
-  dim(testX)
-  # table(metadata_train[,eval(disease)])
-  # table(metadata_test[,eval(disease)])
-  summary(metadata_train$age_value)
-  summary(metadata_test$age_value)
-  dim(all_sub4)
-  
-  #################################################################################################################################################
-  ################################################ Separately normalise the datasets with CSS #######################################################################################
-  
-  #Train dataset
-  metaSeqObject = newMRexperiment(trainX) 
-  metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
-  dge_normalised = data.frame(MRcounts(metaSeqObject_CSS, norm=TRUE, log=FALSE))
-  residuals_train=dge_normalised
-  residuals_train[is.na(residuals_train)]=0
-  colnames(residuals_train)=colnames(trainX)
-  #Keep only the core microbiome
-  residuals_train2=residuals_train[core,]
-  #residuals_train2=residuals_train
-  
-  #Train dataset
-  metaSeqObject = newMRexperiment(testX) 
-  metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
-  dge_normalised = data.frame(MRcounts(metaSeqObject_CSS, norm=TRUE, log=FALSE))
-  residuals_test=dge_normalised
-  residuals_test[is.na(residuals_test)]=0
-  rownames(residuals_test)
-  colnames(residuals_test)=colnames(testX)
-  #Keep only the core microbiome
-  residuals_test2=residuals_test[core,]
-  
-  #residuals_test2=residuals_test
-  
-  
-  ##################################################33333333
-  ###################### Machine learning models 
-  ########################################################
-  #Build the model
-   trainX <- as.data.frame(t(residuals_train2))
-  
-   testX <- as.data.frame(t(residuals_test2))
-  
-  dim(trainX)
-  
-  ctrl <- trainControl(method = "repeatedcv",
-                       number = 5)
-                       
-  defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
-                                 n.trees = floor((1:3) * 50),
-                                 shrinkage =  0.1,
-                                 n.minobsinnode = 3)
-  #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
-  #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
-  mlModel <- train(x = trainX,
-                   y = metadata_train$age_value,
-                   method = "gbm",
-                   trControl = ctrl,
-                   tuneGrid = defaultGBMGrid)
-  
-  # Make predictions on the test set
-  predictions <- predict(mlModel, newdata =testX)
-  
-  # Evaluate the model performance
-  rmse <- sqrt(mean((metadata_test$age_value - predictions)^2))
-  cat("Root Mean Squared Error (RMSE):", rmse, "\n")
-  
-  resampling_results <- data.frame(
-    Observed = metadata_test$age_value,
-    Predicted = predictions
-  )
-  
-  mse <- postResample(resampling_results$Predicted, resampling_results$Observed)
-  cat("Mean Squared Error (MSE):", mse, "\n")
-  
-  permutation_results=rbind(permutation_results, data.frame("Iteration"=i,"RMSE"=as.numeric(mse[1]),"Rsquared"=as.numeric(mse[2]),"MAE"=as.numeric(mse[3])))
-  print(permutation_results)
-  }
+    set.seed(42)
+    #Create the variable to save the results 
+    permutation_results=data.frame(matrix(nrow=1, ncol=4))
+    colnames(permutation_results)=c("Iteration", 'RMSE', "Rsquared", "MAE")
+    for (i in seq(1,100,by=1)) {
+   # index = createDataPartition(metadata4$hypertension_history, p = 0.8, list = FALSE)
+      index = createDataPartition(metadata4[,"age_value"], p = 0.7, list = FALSE)
+      trainX = all_sub4[,index]
+      metadata_train = metadata4[index,]
+      testX = all_sub4[,-index]
+      metadata_test = metadata4[-index,]
+      dim(trainX)
+      dim(testX)
+      # table(metadata_train[,eval(disease)])
+      # table(metadata_test[,eval(disease)])
+      summary(metadata_train$age_value)
+      summary(metadata_test$age_value)
+      dim(all_sub4)
+      
+      #################################################################################################################################################
+      ################################################ Separately normalise the datasets with CSS #######################################################################################
+      
+      #Train dataset
+      metaSeqObject = newMRexperiment(trainX) 
+      metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
+      dge_normalised = data.frame(MRcounts(metaSeqObject_CSS, norm=TRUE, log=FALSE))
+      residuals_train=dge_normalised
+      residuals_train[is.na(residuals_train)]=0
+      colnames(residuals_train)=colnames(trainX)
+      #Keep only the core microbiome
+      residuals_train2=residuals_train[core,]
+      #residuals_train2=residuals_train
+      
+      #Train dataset
+      metaSeqObject = newMRexperiment(testX) 
+      metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
+      dge_normalised = data.frame(MRcounts(metaSeqObject_CSS, norm=TRUE, log=FALSE))
+      residuals_test=dge_normalised
+      residuals_test[is.na(residuals_test)]=0
+      rownames(residuals_test)
+      colnames(residuals_test)=colnames(testX)
+      #Keep only the core microbiome
+      residuals_test2=residuals_test[core,]
+      
+      #residuals_test2=residuals_test
+      
+      
+      ##################################################33333333
+      ###################### Machine learning models 
+      ########################################################
+      #Build the model
+       trainX = as.data.frame(t(residuals_train2))
+      
+       testX = as.data.frame(t(residuals_test2))
+      
+      dim(trainX)
+      
+      ctrl = trainControl(method = "repeatedcv",
+                           number = 5)
+                           
+      defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
+                                     n.trees = floor((1:3) * 50),
+                                     shrinkage =  0.1,
+                                     n.minobsinnode = 3)
+      #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
+      #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
+      mlModel = train(x = trainX,
+                       y = metadata_train$age_value,
+                       method = "gbm",
+                       trControl = ctrl,
+                       tuneGrid = defaultGBMGrid)
+      
+      # Make predictions on the test set
+      predictions = predict(mlModel, newdata =testX)
+      
+      # Evaluate the model performance
+      rmse = sqrt(mean((metadata_test$age_value - predictions)^2))
+      cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+      
+      resampling_results = data.frame(
+        Observed = metadata_test$age_value,
+        Predicted = predictions
+      )
+    
+    mse = postResample(resampling_results$Predicted, resampling_results$Observed)
+    cat("Mean Squared Error (MSE):", mse, "\n")
+    
+    permutation_results=rbind(permutation_results, data.frame("Iteration"=i,"RMSE"=as.numeric(mse[1]),"Rsquared"=as.numeric(mse[2]),"MAE"=as.numeric(mse[3])))
+    print(permutation_results)
+    }
   permutation_results=permutation_results[2:101,]
   dim(permutation_results)
   write.csv(permutation_results,paste("./permutations_age/CSS_core_",sub(" ","_",tissue),"_","age",".csv",sep=""))
@@ -244,7 +243,7 @@ for (tissue in tissues) {
   cumulative_results=rbind(cumulative_results, temp)
   }
 }
-  cumulative_results2=cumulative_results[2:length(cumulative_results$tissue),]
-  write.csv(cumulative_results2,file=paste("./CSS_total_tissues","_","age",".csv",sep=""))
+cumulative_results2=cumulative_results[2:length(cumulative_results$tissue),]
+write.csv(cumulative_results2,file=paste("./CSS_total_tissues","_","age",".csv",sep=""))
   
   
