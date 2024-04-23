@@ -28,7 +28,11 @@ rule humann:
 		zcat {input.R1} {input.R2} > {output.fastq}
 		humann --input  {output.fastq} -v --output ./humann_uniref90_microbialReads_bypass2/ --bypass-nucleotide-index --bypass-nucleotide-search --threads {threads}  --output-format tsv --protein-database /mnt/raid1/humann/databases/uniref/ 
 		"""
-		
+
+#Check https://github.com/biobakery/humann?tab=readme-ov-file#markdown-header-custom-reference-database-annotations
+#To download the full UniRef90 database (20.7GB, recommended): 
+# humann_databases --download uniref uniref90_diamond $INSTALL_LOCATION
+
 
 
 
