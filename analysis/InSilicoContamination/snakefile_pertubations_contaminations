@@ -27,15 +27,4 @@ rule rule_create_contaminate_file:
 		python contamination.py {output}
 		"""
 
-#Create the ML model output file
-#rule rule_create_ml_file:
-#	input:
-#		"contamination/test_{test}_contamination.csv"
-#	output: 
-#		"results/test_{test}_results.csv"
-#	shell:
-#		"""
-#		Rscript contamination_gbm_model_contamination_afterVoom.R {input} {output}
-#		cat {output} | tail -n +2 >> results/cumulative_results.csv
-#		"""
 
