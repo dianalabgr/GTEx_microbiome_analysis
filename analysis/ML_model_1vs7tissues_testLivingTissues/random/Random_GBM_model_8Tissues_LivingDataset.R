@@ -151,7 +151,7 @@ dim(metadata_healthy)
 #############################################################################################################################
 library(parallel)
 library(doMC) # for parallel computing
-numCores <- detectCores()
+numCores = detectCores()
 #Set how many cores the script will use (10 cores)
 registerDoMC(cores=10)
 
@@ -166,11 +166,11 @@ for (tissue in keep_tissues) {
   
     ####################################################################################################################################
     ################################## Split the datasets to train and testing dataset 
-    index <- createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
-    trainX <- all_sub[,index]
-    metadata_train <- metadata2[index,]
-    testX <- all_sub[,-index]
-    metadata_test <- metadata2[-index,]
+    index = createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
+    trainX = all_sub[,index]
+    metadata_train = metadata2[index,]
+    testX = all_sub[,-index]
+    metadata_test = metadata2[-index,]
     dim(trainX)
     dim(testX)
     table(metadata_train$tissue_type)
@@ -209,53 +209,51 @@ for (tissue in keep_tissues) {
   # Build up-sampled model
   samplingStrategy = "up"
   rownames(metadata_train) = metadata_train$specimen_id
-  TypeComparison <- metadata_train$tissue_type
+  TypeComparison = metadata_train$tissue_type
   TypeString = tissue
   #  TypeString = "Liver"
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                  levels = c(TypeString, "OtherType"))
   
-  #Randomly shuffle ta labes of the metadata_train
+  #Randomly shuffle the labes of the metadata_train
   metadata_train$TypeComparison=sample(TypeComparisonFactor)
   #metadata_train$TypeComparison=TypeComparisonFactor
-  mlDataY <- metadata_train
-  mlDataX <- data_trans2[rownames(mlDataY),]
+  mlDataY = metadata_train
+  mlDataX = data_trans2[rownames(mlDataY),]
   dim(mlDataY)[1] == dim(mlDataX)[1] # Sanity check
   
   
-  trainX <- mlDataX
-  trainY <- mlDataY$TypeComparison
+  trainX = mlDataX
+  trainY = mlDataY$TypeComparison
   dim(trainX)
   
-  testX <- as.data.frame(t(residuals_test2))
+  testX = as.data.frame(t(residuals_test2))
   #dim(data_gtex_test)
   dim(testX)
   dim(metadata_test)
-  TypeComparison <- metadata_test$tissue_type
+  TypeComparison = metadata_test$tissue_type
   TypeString = tissue
   
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                  levels = c(TypeString, "OtherType"))
   
   table(TypeComparisonFactor)
   
-  #Randomly shiffule the tissue labels of metadata_test
-  #metadata_test$TypeComparison=TypeComparisonFactor
-  metadata_test$TypeComparison=sample(TypeComparisonFactor)
-  mlDataY <- metadata_test
-  testY <- mlDataY[]$TypeComparison
+  metadata_test$TypeComparison=TypeComparisonFactor
+  mlDataY = metadata_test
+  testY = mlDataY[]$TypeComparison
   length(testY)
   dim(trainX)
   dim(testX)
   
-  refactoredTrainY <- factor(gsub('([[:punct:]])|\\s+','',trainY))
-  refactoredTestY <- factor(gsub('([[:punct:]])|\\s+','',testY))
+  refactoredTrainY = factor(gsub('([[:punct:]])|\\s+','',trainY))
+  refactoredTestY = factor(gsub('([[:punct:]])|\\s+','',testY))
   
-  refactoredTrainY <- relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
-  refactoredTestY <- relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+  refactoredTrainY = relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+  refactoredTestY = relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
   
   #Create trainControl for Caret package
-  ctrl <- trainControl(method = "repeatedcv",
+  ctrl = trainControl(method = "repeatedcv",
                        number = 2,
                        repeats = 1,
                        summaryFunction = twoClassSummary,
@@ -265,16 +263,16 @@ for (tissue in keep_tissues) {
                        allowParallel=TRUE)
   
   # Build up-sampled model
-  ctrl$sampling <- samplingStrategy
+  ctrl$sampling = samplingStrategy
   print("Now training model with up sampling...")
   
-  defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
+  defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
                                  n.trees = floor((1:3) * 50),
                                  shrinkage = 0.1,
                                  n.minobsinnode = 3)
   #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
   #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
-    mlModel <- train(x = trainX,
+    mlModel = train(x = trainX,
                      y = refactoredTrainY,
                      method = "gbm",
                      preProcess = c("scale","center"),
@@ -282,9 +280,9 @@ for (tissue in keep_tissues) {
                      metric = "ROC",
                      tuneGrid = defaultGBMGrid)
     
-    predProbs <- as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
-    fg <- predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
-    bg <- predProbs[refactoredTestY == "OtherType"]
+    predProbs = as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
+    fg = predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
+    bg = predProbs[refactoredTestY == "OtherType"]
     
     roc_GTEX=roc.curve(scores.class0 = fg, scores.class1 = bg, curve = T)
     pr_GTEX=pr.curve(scores.class0 = fg, scores.class1 = bg, curve = T, rand.compute=T)
@@ -303,10 +301,10 @@ for (tissue in keep_tissues) {
     #
     dim(data_normalised_healthy2)
     dim(testX)
-    predProbs2 <- as.numeric(predict(mlModel, newdata = data_normalised_healthy2, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
+    predProbs2 = as.numeric(predict(mlModel, newdata = data_normalised_healthy2, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
     length(predProbs2)
-    fg2 <- predProbs2[which(data_normalised_healthyY == TypeString)]
-    bg2 <- predProbs2[data_normalised_healthyY == "OtherType"]
+    fg2 = predProbs2[which(data_normalised_healthyY == TypeString)]
+    bg2 = predProbs2[data_normalised_healthyY == "OtherType"]
     
     roc_living=roc.curve(scores.class0 = fg2, scores.class1 = bg2, curve = T)
     
@@ -319,24 +317,24 @@ for (tissue in keep_tissues) {
   write.csv(tissue_cumulative, file=paste("ROC_random_shuffle_",tissue,".csv",sep=""))
   
   # Calculate the standard error of the mean
-  se_mean_X1 <- sd(tissue_cumulative$X1) / sqrt(length(tissue_cumulative$X1))
+  se_mean_X1 = sd(tissue_cumulative$X1) / sqrt(length(tissue_cumulative$X1))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X1 <- qt(0.975, df = length(tissue_cumulative$X1) - 1) * se_mean_X1
+  margin_of_error_X1 = qt(0.975, df = length(tissue_cumulative$X1) - 1) * se_mean_X1
   
   # Calculate the standard error of the mean
-  se_mean_X2 <- sd(tissue_cumulative$X2) / sqrt(length(tissue_cumulative$X2))
+  se_mean_X2 = sd(tissue_cumulative$X2) / sqrt(length(tissue_cumulative$X2))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X2 <- qt(0.975, df = length(tissue_cumulative$X2) - 1) * se_mean_X2
+  margin_of_error_X2 = qt(0.975, df = length(tissue_cumulative$X2) - 1) * se_mean_X2
   
   # Calculate the standard error of the mean
-  se_mean_X4 <- sd(tissue_cumulative$X4) / sqrt(length(tissue_cumulative$X4))
+  se_mean_X4 = sd(tissue_cumulative$X4) / sqrt(length(tissue_cumulative$X4))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X4 <- qt(0.975, df = length(tissue_cumulative$X4) - 1) * se_mean_X4
+  margin_of_error_X4 = qt(0.975, df = length(tissue_cumulative$X4) - 1) * se_mean_X4
   
   # Calculate the standard error of the mean
-  se_mean_X5 <- sd(tissue_cumulative$X5) / sqrt(length(tissue_cumulative$X5))
+  se_mean_X5 = sd(tissue_cumulative$X5) / sqrt(length(tissue_cumulative$X5))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X5 <- qt(0.975, df = length(tissue_cumulative$X5) - 1) * se_mean_X5
+  margin_of_error_X5 = qt(0.975, df = length(tissue_cumulative$X5) - 1) * se_mean_X5
   
   cumulative_results_ROC_PR[tissue,]=c(mean(tissue_cumulative$X1),margin_of_error_X1,mean(tissue_cumulative$X2),margin_of_error_X2,
                                        mean(tissue_cumulative$X3),mean(tissue_cumulative$X4),margin_of_error_X4,
