@@ -50,50 +50,47 @@ library(metagenomeSeq)
 ################################### Genes #####################################################
 ###############################################################################################
 
-# #Upload metadata
-# metadata=read.delim(file="/mnt/raid1/argis/GTEx/after_access/all_samples_QC/GTEx_Argis_QCed_all_metadata.tab")
-# 
-# #Upload agamenon results data
-# 
-# #Read agamemnon results files of all the GTEx 
-# GTEx_all_run = read.delim2(file="../../human_gene_families_all_withoutUnclassified.tsv")
-# colnames(GTEx_all_run)=gsub("\\.", "-",colnames(GTEx_all_run))
-# colnames(GTEx_all_run)=substr(colnames(GTEx_all_run),1,nchar(colnames(GTEx_all_run))-15)
-# metadata$samples.submitter_id
-# which(colnames(GTEx_all_run)%in%metadata$samples.submitter_id)
-# all=GTEx_all_run[,which(colnames(GTEx_all_run)%in%c("",metadata$samples.submitter_id))]    
-# rownames=GTEx_all_run[,1]
-# rownames(all)=rownames
-# 
-# dim(all)
-# rownames(all)[2:10]
-# all[2,10]
-# all <- as.data.frame(sapply(all, as.numeric))
-# all[2,10]
-# all[is.na(all)]=0
-# rownames(all)=rownames
-# rownames(all)[1:2]
-# dim(all)
+ #Upload metadata
+ metadata=read.delim(file="/mnt/raid1/argis/GTEx/after_access/all_samples_QC/GTEx_Argis_QCed_all_metadata.tab")
+ 
+
+ 
+ #Read humann3 results files of all the GTEx 
+ GTEx_all_run = read.delim2(file="../../human_gene_families_all_withoutUnclassified.tsv")
+ colnames(GTEx_all_run)=gsub("\\.", "-",colnames(GTEx_all_run))
+ colnames(GTEx_all_run)=substr(colnames(GTEx_all_run),1,nchar(colnames(GTEx_all_run))-15)
+ metadata$samples.submitter_id
+ which(colnames(GTEx_all_run)%in%metadata$samples.submitter_id)
+ all=GTEx_all_run[,which(colnames(GTEx_all_run)%in%c("",metadata$samples.submitter_id))]    
+ rownames=GTEx_all_run[,1]
+ rownames(all)=rownames
+ 
+ dim(all)
+ rownames(all)[2:10]
+ all[2,10]
+ all <- as.data.frame(sapply(all, as.numeric))
+ all[2,10]
+ all[is.na(all)]=0
+ rownames(all)=rownames
+ rownames(all)[1:2]
+ dim(all)
 # 
 # #From all remove the species with zero value in all the samples 
-# all_sub=all[rowSums(all==0, na.rm=TRUE)<ncol(all), ]
-# dim(all_sub)
-# rm(all)
-# rm(GTEx_all_run)
-# gc()
-# 
-# rownames(all_sub)[1:3]
-# head(all_sub)
-# all_sub=all_sub[2:length(all_sub[,1]),]
-# 
-# #Change the order of the records of metadata according to all_sub columns
-# metadata2=metadata[which(metadata$samples.submitter_id%in%colnames(all_sub)), ]
-# metadata2=metadata2[match(colnames(all_sub), metadata2$samples.submitter_id), ]
-# dim(metadata2)
-# 
-# save(metadata2,all_sub, file = "stuff.RData")
-
-load("stuff.RData")
+ all_sub=all[rowSums(all==0, na.rm=TRUE)<ncol(all), ]
+ dim(all_sub)
+ rm(all)
+ rm(GTEx_all_run)
+ gc()
+ 
+ rownames(all_sub)[1:3]
+ head(all_sub)
+ all_sub=all_sub[2:length(all_sub[,1]),]
+ 
+ #Change the order of the records of metadata according to all_sub columns
+ metadata2=metadata[which(metadata$samples.submitter_id%in%colnames(all_sub)), ]
+ metadata2=metadata2[match(colnames(all_sub), metadata2$samples.submitter_id), ]
+ dim(metadata2)
+ 
 
 
 # #Keep only samples from the 8 important tissues
@@ -307,6 +304,7 @@ for (tissue in unique(metadata2$tissue_type)) {
     residuals_test_species2=residuals_test_species[core_species,]
     dim(residuals_test_species2)
     dim(residuals_test_genes2)
+   
     residuals_test2=rbind(residuals_test_species2,residuals_test_genes2)
     dim(residuals_test2)
     dim(residuals_train2)
@@ -384,7 +382,7 @@ for (tissue in unique(metadata2$tissue_type)) {
     tissue_cumulative[i,]=c(roc_GTEX$auc,pr_GTEX$auc.integral,pr_GTEX$rand$auc.integral)
     print(tissue_cumulative)
   }
-  write.csv(tissue_cumulative, file=paste("shuffling_genes_species/ROC_shuffle_",tissue,".csv",sep=""))
+  write.csv(tissue_cumulative, file=paste("iterations_genes_species/ROC_",tissue,".csv",sep=""))
   
   # Calculate the standard error of the mean
   se_mean_X1 <- sd(tissue_cumulative$X1) / sqrt(length(tissue_cumulative$X1))
