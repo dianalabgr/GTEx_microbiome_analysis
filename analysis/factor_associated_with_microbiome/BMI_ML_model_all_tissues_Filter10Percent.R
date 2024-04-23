@@ -48,7 +48,7 @@ library(ggsci)
 #remotes::install_github("yiluheihei/microbiomeMarker")
 library(microbiomeMarker)
 
-numCores <- detectCores()
+numCores = detectCores()
 #Set how many cores the script will use (10 cores)
 registerDoMC(cores=10)
 
@@ -150,11 +150,11 @@ for (tissue in tissues) {
   permutation_results=data.frame(matrix(nrow=1, ncol=4))
   colnames(permutation_results)=c("Iteration", 'RMSE', "Rsquared", "MAE")
   for (i in seq(1,100,by=1)) {
-    index <- createDataPartition(metadata4[,"body_mass_index"], p = 0.7, list = FALSE)
-    trainX <- all_sub4[,index]
-    metadata_train <- metadata4[index,]
-    testX <- all_sub4[,-index]
-    metadata_test <- metadata4[-index,]
+    index = createDataPartition(metadata4[,"body_mass_index"], p = 0.7, list = FALSE)
+    trainX = all_sub4[,index]
+    metadata_train = metadata4[index,]
+    testX = all_sub4[,-index]
+    metadata_test = metadata4[-index,]
     dim(trainX)
     dim(testX)
     summary(metadata_train$body_mass_index)
@@ -189,14 +189,14 @@ for (tissue in tissues) {
     ###################### Machine learning models 
     ########################################################
     #Build the model
-    trainX <- as.data.frame(t(residuals_train2))
+    trainX = as.data.frame(t(residuals_train2))
     
-    testX <- as.data.frame(t(residuals_test2))
+    testX = as.data.frame(t(residuals_test2))
     
-    ctrl <- trainControl(method = "repeatedcv",
+    ctrl = trainControl(method = "repeatedcv",
                          number = 5)
     
-    defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
+    defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
                                    n.trees = floor((1:3) * 50),
                                    shrinkage =  0.1,
                                    n.minobsinnode = 3)
@@ -204,26 +204,26 @@ for (tissue in tissues) {
     #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
     dim(trainX)
     metadata_train$body_mass_index
-    mlModel <- train(x = trainX,
+    mlModel = train(x = trainX,
                      y = metadata_train$body_mass_index,
                      method = "gbm",
                      trControl = ctrl,
                      tuneGrid = defaultGBMGrid)
     
     # Make predictions on the test set
-    predictions <- predict(mlModel, newdata =testX)
+    predictions = predict(mlModel, newdata =testX)
     
     # Evaluate the model performance
-    rmse <- sqrt(mean((metadata_test$body_mass_index - predictions)^2))
+    rmse = sqrt(mean((metadata_test$body_mass_index - predictions)^2))
     cat("Root Mean Squared Error (RMSE):", rmse, "\n")
     
     # Assuming 'target' is the name of your numeric target variable
-    resampling_results <- data.frame(
+    resampling_results = data.frame(
       Observed = metadata_test$body_mass_index,
       Predicted = predictions
     )
     
-    mse <- postResample(resampling_results$Predicted, resampling_results$Observed)
+    mse = postResample(resampling_results$Predicted, resampling_results$Observed)
     cat("Mean Squared Error (MSE):", mse, "\n")
     
     permutation_results=rbind(permutation_results, data.frame("Iteration"=i,"RMSE"=as.numeric(mse[1]),"Rsquared"=as.numeric(mse[2]),"MAE"=as.numeric(mse[3])))
