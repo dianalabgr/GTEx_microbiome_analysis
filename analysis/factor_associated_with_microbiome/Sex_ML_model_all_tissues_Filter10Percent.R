@@ -49,7 +49,7 @@ library(ggsci)
 library(microbiomeMarker)
 library(metagenomeSeq)
 
-numCores <- detectCores()
+numCores = detectCores()
 #Set how many cores the script will use (10 cores)
 registerDoMC(cores=1)
 
@@ -153,12 +153,12 @@ for (tissue in tissues2) {
   permutation_results=data.frame(matrix(nrow=1, ncol=4))
   colnames(permutation_results)=c("Iteration", 'AUROC', "AUPR", "AUPR_random")
   for (i in seq(1,100,by=1)) {
- # index <- createDataPartition(metadata4$hypertension_history, p = 0.8, list = FALSE)
-  index <- createDataPartition(metadata4[,"sex"], p = 0.7, list = FALSE)
-  trainX <- all_sub4[,index]
-  metadata_train <- metadata4[index,]
-  testX <- all_sub4[,-index]
-  metadata_test <- metadata4[-index,]
+ # index = createDataPartition(metadata4$hypertension_history, p = 0.8, list = FALSE)
+  index = createDataPartition(metadata4[,"sex"], p = 0.7, list = FALSE)
+  trainX = all_sub4[,index]
+  metadata_train = metadata4[index,]
+  testX = all_sub4[,-index]
+  metadata_test = metadata4[-index,]
   dim(trainX)
   dim(testX)
   table(metadata_train[,"sex"])
@@ -178,7 +178,7 @@ for (tissue in tissues2) {
   #Keep only the species in the core 
   residuals_train2=residuals_train[core,]
 
-  #Train dataset
+  #Test dataset
   metaSeqObject = newMRexperiment(testX) 
   metaSeqObject_CSS  = cumNorm( metaSeqObject , p=cumNormStatFast(metaSeqObject) )
   dge_normalised = data.frame(MRcounts(metaSeqObject_CSS, norm=TRUE, log=FALSE))
@@ -199,40 +199,40 @@ for (tissue in tissues2) {
   samplingStrategy = "up"
   
   rownames(metadata_train) = metadata_train$specimen_id
-  TypeComparison <- metadata_train[,eval("sex")]
+  TypeComparison = metadata_train[,eval("sex")]
   TypeString = "Male"
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = "Male", no = "Female"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = "Male", no = "Female"),
                                  levels = c("Male", "Female"))
   table(TypeComparisonFactor)
   #  set.seed(872436)           # Set seed
   #metadata2$TypeComparison=sample(TypeComparisonFactor)
   metadata_train$TypeComparison=TypeComparisonFactor
-  mlDataY <- metadata_train
-  mlDataX <- data_trans2[rownames(mlDataY),]
+  mlDataY = metadata_train
+  mlDataX = data_trans2[rownames(mlDataY),]
   dim(mlDataY)[1] == dim(mlDataX)[1] # Sanity check
-  indexSuper <- 1:dim(mlDataY)[1]
+  indexSuper = 1:dim(mlDataY)[1]
   
-  trainX <- mlDataX
-  trainY <- mlDataY$TypeComparison
+  trainX = mlDataX
+  trainY = mlDataY$TypeComparison
   
-  testX <- as.data.frame(t(residuals_test2))
-  TypeComparison <- metadata_test[,"sex"]
+  testX = as.data.frame(t(residuals_test2))
+  TypeComparison = metadata_test[,"sex"]
   TypeString = "Male"
-  TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = "Male", no = "Female"),
+  TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = "Male", no = "Female"),
                                  levels = c("Male", "Female"))
   
   metadata_test$TypeComparison=TypeComparisonFactor
   testY=metadata_test$TypeComparison
   #length(testY)
   
-  refactoredTrainY <- factor(gsub('([[:punct:]])|\\s+','',trainY))
-  refactoredTestY <- factor(gsub('([[:punct:]])|\\s+','',testY))
+  refactoredTrainY = factor(gsub('([[:punct:]])|\\s+','',trainY))
+  refactoredTestY = factor(gsub('([[:punct:]])|\\s+','',testY))
 
-  refactoredTrainY <- relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',"Male"))
-  refactoredTestY <- relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',"Male"))
+  refactoredTrainY = relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',"Male"))
+  refactoredTestY = relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',"Male"))
   table(refactoredTestY)
   
-  ctrl <- trainControl(method = "repeatedcv",
+  ctrl = trainControl(method = "repeatedcv",
                        number = 4,
                        repeats = 1,
                        summaryFunction = twoClassSummary,
@@ -242,17 +242,17 @@ for (tissue in tissues2) {
                        allowParallel=TRUE)
   
   # Build up-sampled model
-  ctrl$sampling <- samplingStrategy
+  ctrl$sampling = samplingStrategy
   print("Now training model with up sampling...")
   
-  defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
+  defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
                                  n.trees = floor((1:3) * 50),
                                  shrinkage = 0.1,
                                  n.minobsinnode = 3)
   #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
   #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
   
-  mlModel <- train(x = trainX,
+  mlModel = train(x = trainX,
                    y = refactoredTrainY,
                    method = "gbm",
                    preProcess = c("scale","center"),
@@ -260,9 +260,9 @@ for (tissue in tissues2) {
                    metric = "ROC",
                    tuneGrid = defaultGBMGrid)
   
-  predProbs <- as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',"Male")])
-  fg <- predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',"Male")]
-  bg <- predProbs[refactoredTestY == "Female"]
+  predProbs = as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',"Male")])
+  fg = predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',"Male")]
+  bg = predProbs[refactoredTestY == "Female"]
   
   roc_GTEX=roc.curve(scores.class0 = fg, scores.class1 = bg, curve = T)
   pr_GTEX=pr.curve(scores.class0 = fg, scores.class1 = bg, curve = T, rand.compute=T)
@@ -276,14 +276,14 @@ for (tissue in tissues2) {
   write.csv(permutation_results,paste("./permutations_sex/CSS_core_",sub(" ","_",tissue),"_","sex",".csv",sep=""))
   
   # Calculate the standard error of the mean
-  se_mean_X1 <- sd(permutation_results$AUROC) / sqrt(length(permutation_results$AUROC))
+  se_mean_X1 = sd(permutation_results$AUROC) / sqrt(length(permutation_results$AUROC))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X1 <- qt(0.975, df = length(permutation_results$AUROC) - 1) * se_mean_X1
+  margin_of_error_X1 = qt(0.975, df = length(permutation_results$AUROC) - 1) * se_mean_X1
   
   # Calculate the standard error of the mean
-  se_mean_X2 <- sd(permutation_results$AUPR) / sqrt(length(permutation_results$AUPR))
+  se_mean_X2 = sd(permutation_results$AUPR) / sqrt(length(permutation_results$AUPR))
   # Calculate the margin of error for a 95% confidence interval
-  margin_of_error_X2 <- qt(0.975, df = length(permutation_results$AUPR) - 1) * se_mean_X2
+  margin_of_error_X2 = qt(0.975, df = length(permutation_results$AUPR) - 1) * se_mean_X2
   
   temp=data.frame(tissue, "sex", mean(unlist(permutation_results$AUROC)), margin_of_error_X1,mean(unlist(permutation_results$AUPR)), margin_of_error_X2, mean(unlist(permutation_results$AUPR_random)))
   colnames(temp) = c("tissue","trait","ROC","margin_of_error_AUROC", "PR","margin_of_error_AUPR","PR_random")
