@@ -114,11 +114,11 @@ for (i in seq(1,100,step=1)) {
   #i=5
   ####################################################################################################################################
   ################################## Split the datasets to train and testing dataset 
-  index <- createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
-  trainX <- all_sub[,index]
-  metadata_train <- metadata2[index,]
-  testX <- all_sub[,-index]
-  metadata_test <- metadata2[-index,]
+  index = createDataPartition(metadata2$tissue_type, p = 0.7, list = FALSE)
+  trainX = all_sub[,index]
+  metadata_train = metadata2[index,]
+  testX = all_sub[,-index]
+  metadata_test = metadata2[-index,]
   dim(trainX)
   dim(testX)
   table(metadata_train$tissue_type)
@@ -157,7 +157,7 @@ for (i in seq(1,100,step=1)) {
   #Parallel computing
   library(parallel)
   library(doMC) # for parallel computing
-  numCores <- detectCores()
+  numCores = detectCores()
   #Set how many cores the script will use (10 cores)
   registerDoMC(cores=8)
   
@@ -187,35 +187,35 @@ for (i in seq(1,100,step=1)) {
     # Build up-sampled model
     samplingStrategy = "up"
     rownames(metadata_train) = metadata_train$specimen_id
-    TypeComparison <- metadata_train$tissue_type
+    TypeComparison = metadata_train$tissue_type
     TypeString = tissue
-    TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+    TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                    levels = c(TypeString, "OtherType"))
     metadata_train$TypeComparison=TypeComparisonFactor
-    mlDataY <- metadata_train
-    mlDataX <- data_trans2[rownames(mlDataY),]
+    mlDataY = metadata_train
+    mlDataX = data_trans2[rownames(mlDataY),]
     dim(mlDataY)[1] == dim(mlDataX)[1] # Sanity check
     
-    trainX <- mlDataX
-    trainY <- mlDataY$TypeComparison
+    trainX = mlDataX
+    trainY = mlDataY$TypeComparison
     
-    testX <- as.data.frame(t(residuals_test2))
-    TypeComparison <- metadata_test$tissue_type
+    testX = as.data.frame(t(residuals_test2))
+    TypeComparison = metadata_test$tissue_type
     TypeString = tissue
-    TypeComparisonFactor <- factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
+    TypeComparisonFactor = factor(ifelse(TypeComparison == TypeString, yes = TypeString, no = "OtherType"),
                                    levels = c(TypeString, "OtherType"))
 
     metadata_test$TypeComparison=TypeComparisonFactor
     testY=metadata_test$TypeComparison
 
-    refactoredTrainY <- factor(gsub('([[:punct:]])|\\s+','',trainY))
-    refactoredTestY <- factor(gsub('([[:punct:]])|\\s+','',testY))
+    refactoredTrainY = factor(gsub('([[:punct:]])|\\s+','',trainY))
+    refactoredTestY = factor(gsub('([[:punct:]])|\\s+','',testY))
     
-    refactoredTrainY <- relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
-    refactoredTestY <- relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+    refactoredTrainY = relevel(refactoredTrainY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
+    refactoredTestY = relevel(refactoredTestY, ref = gsub('([[:punct:]])|\\s+','',TypeString))
     
     #Create the trainControl for Caret package
-    ctrl <- trainControl(method = "repeatedcv",
+    ctrl = trainControl(method = "repeatedcv",
                          number = 2,
                          repeats = 1,
                          summaryFunction = twoClassSummary,
@@ -225,17 +225,17 @@ for (i in seq(1,100,step=1)) {
                          allowParallel=TRUE)
     
     # Build up-sampled model
-    ctrl$sampling <- samplingStrategy
+    ctrl$sampling = samplingStrategy
     print("Now training model with up sampling...")
     
-    defaultGBMGrid <-  expand.grid(interaction.depth = seq(1,3),
+    defaultGBMGrid =  expand.grid(interaction.depth = seq(1,3),
                                    n.trees = floor((1:3) * 50),
                                    shrinkage = 0.1,
                                    n.minobsinnode = 3)
     #Explained https://www.listendata.com/2015/07/gbm-boosted-models-tuning-parameters.html
     #Check this out https://s3.amazonaws.com/assets.datacamp.com/production/course_6650/slides/chapter2.pdf
     
-    mlModel <- train(x = trainX,
+    mlModel = train(x = trainX,
                      y = refactoredTrainY,
                      method = "gbm",
                      preProcess = c("scale","center"),
@@ -244,9 +244,9 @@ for (i in seq(1,100,step=1)) {
                      tuneGrid = defaultGBMGrid)
     
     #Calculate AUROC and AUPR
-    predProbs <- as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
-    fg <- predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
-    bg <- predProbs[refactoredTestY == "OtherType"]
+    predProbs = as.numeric(predict(mlModel, newdata = testX, type = "prob")[, gsub('([[:punct:]])|\\s+','',TypeString)])
+    fg = predProbs[refactoredTestY == gsub('([[:punct:]])|\\s+','',TypeString)]
+    bg = predProbs[refactoredTestY == "OtherType"]
     
     roc_GTEX=roc.curve(scores.class0 = fg, scores.class1 = bg, curve = T)
     pr_GTEX=pr.curve(scores.class0 = fg, scores.class1 = bg, curve = T, rand.compute=T)
