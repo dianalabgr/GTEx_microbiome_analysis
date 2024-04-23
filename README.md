@@ -21,3 +21,19 @@ there are the scripts for creating all the necessary files for the analysis! The
 
 In the folder analysis:
 there are the scritps 
+  1. number_reads_per_step (needed file from zenodo NumberReads_samples_logs.zip)
+  2. alphaDiversity_and_core_microbiome
+  3. ML_models_1vs27Tissues
+  4. InSilicoContamination
+  5. ML_model_1vs7tissues_featureImportanceAnalysis
+  6. BoxPlots_per_microbiome_8ImportantTissues
+  7. ML_models_with_Kaiju
+  8. ML_models_1vs7Tissues_GeneraLevel
+  9. ML_models_1vs27Tissues_GeneraLevel
+  10. ML_models_1vs7Tissues_Genes
+  11. factor_associated_with_microbiome
+  12. ML_model_1vs7tissues_testLivingTissues
+  13. Living_dataset
+
+
+
