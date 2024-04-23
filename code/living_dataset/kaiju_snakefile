@@ -1,0 +1,30 @@
+#Read the file with the names of the samples that we will use 
+with open('samples_11SignificantTissues.txt') as fh:
+	samples = [line.strip() for line in fh]
+	print(samples)
+
+#rule for making all outputs
+rule rule_all:
+	input:
+		expand("summary/kaiju_summary_species_{sample}.tsv",sample=samples),
+		expand("summary/kaiju_summary_genus_{sample}.tsv",sample=samples),
+		expand("temp/kaiju_QCed_{sample}.txt",sample=samples)
+	
+#rule run kaiju
+rule kaiju:
+	input: 
+		R1="../QCed/QCed_{sample}_1.fastq.gz",
+		R2="../QCed/QCed_{sample}_2.fastq.gz"
+	output:
+		TXT="temp/kaiju_QCed_{sample}.txt",
+		SUMMARY_SPECIES="summary/kaiju_summary_species_{sample}.tsv",
+		SUMMARY_GENUS="summary/kaiju_summary_genus_{sample}.tsv",
+	threads : 10
+	shell:
+		r"""
+		/mnt/raid1/argis/tools/kaiju/bin/kaiju -z 10 -t /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/nodes.dmp -f /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/kaiju_db_nr_euk.fmi -i {input.R1}  -j {input.R2} -o {output.TXT}
+		/mnt/raid1/argis/tools/kaiju/bin/kaiju2table -t /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/nodes.dmp -n /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/names.dmp -p -r species -o {output.SUMMARY_SPECIES} {output.TXT}
+		/mnt/raid1/argis/tools/kaiju/bin/kaiju2table -t /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/nodes.dmp -n /mnt/raid1/argis/tools/kaiju/kaijudb/nr_Pluseukaruotes/names.dmp -p -r genus -o {output.SUMMARY_GENUS} {output.TXT}
+		python concatenate_kaiju_summary_results.py {output.SUMMARY_SPECIES}
+		"""
+
