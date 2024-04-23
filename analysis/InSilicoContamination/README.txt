@@ -1,3 +1,11 @@
+Here is the analysis of in silico contamination 
+Run first the snakemake file snakefile_pertubations_contaminations to create the in silico contaminants 
+
+Then create the folder results and 
+Then run the R script contamination_gbm_model_contamination_afterCSS_github.R to create the results for each iteration of contamination 
+
+The to gather all the results run the following commands in terminal
+
 cd results
 
 samples=($(ls))
