@@ -1,7 +1,7 @@
 library(ggplot2)
 library(stringr)
 library(viridis)
-
+#To replicate this analysis you should download from zenodo folder the file NumberReads_samples_logs.zip and change accordingly the metadata file 
 #Upload metadata
 metadata=read.delim(file="/mnt/raid1/argis/GTEx/after_access/all_samples_QC/GTEx_Argis_QCed_all_metadata.tab")
 
