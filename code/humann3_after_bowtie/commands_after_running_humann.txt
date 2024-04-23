@@ -1,0 +1,8 @@
+mkdir genefamilies, 
+cp *microbial_genefamilies.tsv ./genefamilies/
+humann_join_tables -i genefamilies/ --output ../human_gene_families_all.tsv
+
+cat human_gene_families_all.tsv | awk '$1 !~ "unclassified" {print $0}' > human_gene_families_all_withoutUnclassified.tsv
+
+cat human_gene_families_all_notComplete.tsv | awk '$1 !~ "unclassified" {print $0}' > human_gene_families_all_notComplete_withoutUnclassified.tsv
+
