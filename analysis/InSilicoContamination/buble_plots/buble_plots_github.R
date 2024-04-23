@@ -31,9 +31,9 @@ for (name in colnames(mean)){
 }
 
 # Convert dataframe to long format
-cumulative_dataframe_long <- melt(cumulative_dataframe, id.vars = "contamination")
+cumulative_dataframe_long = melt(cumulative_dataframe, id.vars = "contamination")
 cumulative_dataframe_long$value=as.numeric(cumulative_dataframe_long$value)
-cumulative_dataframe_long$value <- round(cumulative_dataframe_long$value*100, digits = 2)
+cumulative_dataframe_long$value = round(cumulative_dataframe_long$value*100, digits = 2)
 
 jpeg("12_contaminants_bigger.jpg",width = 25, height = 10, units = "in", res=450)
 ggplot(cumulative_dataframe_long,
