@@ -4,52 +4,7 @@ library(rsample)      # data splitting
 library(dplyr)
 library(ggplot2)      # model visualization
 # 
-# library(rsample)      # data splitting 
-# library(gbm)          # basic implementation
-# library(xgboost)      # a faster implementation of gbm
-# library(caret)        # an aggregator package for performing many machine learning models
-# library(h2o)          # a java-based platform
-# library(pdp)          # model visualization
-# #library(ggplot2)      # model visualization
-# library(lime)         # model visualization
-# # Loading package
-# library(dplyr)
-# # Loading package
-# library(caTools)
-# library("pROC")
-# library(ROCR)
-# #install.packages("PRROC")
-# library("PRROC")
-# #Libraries Needed
-# library(dplyr)
-# library(stringr)
-# library(data.table)        
-# #install.packages("FactoMineR")
-# library("FactoMineR")
-# #install.packages("factoextra")
-# library(factoextra)
-# #BiocManager::install("edgeR")
-# library(edgeR)
-# library(limma)
-# #BiocManager::install("snm")
-# library(snm)
-# #BiocManager::install("Maaslin2")
-# library(Maaslin2)
-# #BiocManager::install("M3C")
-# library(M3C)
-# #PVCA install
-# #https://rdrr.io/github/dleelab/pvca/#vignettes
-# #remotes::install_github("dleelab/pvca", force=TRUE)
-# #library("pvca")
-# library(lme4)
-# #install_github("vqv/ggbiplot")
-# #install_github("road2stat/ggsci")
-# library(devtools)
-# library(ggsci)
-# if (!requireNamespace("remotes", quietly=TRUE))
-#   install.packages("remotes")
-# #remotes::install_github("yiluheihei/microbiomeMarker")
-# library(microbiomeMarker)
+#Run the commented code one time in order to create the data.RData and then run the script from the command line 
 # 
 # #Upload metadata
 # metadata=read.delim(file="/mnt/raid1/argis/GTEx/after_access/all_samples_QC/GTEx_Argis_QCed_all_metadata.tab")
@@ -95,7 +50,7 @@ library(ggplot2)      # model visualization
 
 load("data.RData")
 #Input the microbiome wanted
-args <- commandArgs(trailingOnly = TRUE)
+args = commandArgs(trailingOnly = TRUE)
 microbiome=args[1]
 normalised=args[2]
 #microbiome="Allomeiothermus silvanus"
