@@ -52,42 +52,7 @@ library(metagenomeSeq)
 #Upload data
 #I have splited the data in order to run Kaiju, thats why there are multiple files, for replication of the results you can upload the total file Kaiju_taxonomic_results.csv
 #Read kaiju results file
-all_demo_run = read.delim(file="../concatenated_results_superDemoRun.tsv")
-head(all_demo_run)
-colnames(all_demo_run)
-columns_withoutQCed_all_demo_run=unlist(lapply(colnames(all_demo_run)[2:length(colnames(all_demo_run))], function(x) substring(x,17)))
-columns_withoutQCed_all_demo_run=unlist(lapply(columns_withoutQCed_all_demo_run, function(x) substr(x,1,nchar(x)-4)))
-columns_withoutQCed_all_demo_run=gsub("\\.","-",columns_withoutQCed_all_demo_run)
-colnames(all_demo_run)=c("taxon_name",columns_withoutQCed_all_demo_run)
-dim(all_demo_run)
-
-#Read kaiju results file
-all_extra_tissues = read.delim(file="../concatenated_results_extraTissues.tsv")
-head(all_extra_tissues)
-colnames(all_extra_tissues)
-columns_withoutQCed_all_extra_tissues=unlist(lapply(colnames(all_extra_tissues)[2:length(colnames(all_extra_tissues))], function(x) substring(x,23)))
-columns_withoutQCed_all_extra_tissues=unlist(lapply(columns_withoutQCed_all_extra_tissues, function(x) substr(x,1,nchar(x)-4)))
-columns_withoutQCed_all_extra_tissues=gsub("\\.","-",columns_withoutQCed_all_extra_tissues)
-colnames(all_extra_tissues)=c("taxon_name",columns_withoutQCed_all_extra_tissues)
-dim(all_extra_tissues)
-
-
-#Read kaiju results file
-heart_extra_tissues = read.delim(file="../concatenated_results_heartExtra.tsv")
-head(heart_extra_tissues)
-colnames(heart_extra_tissues)
-columns_withoutQCed_heart_extra_tissues=unlist(lapply(colnames(heart_extra_tissues)[2:length(colnames(heart_extra_tissues))], function(x) substring(x,17)))
-columns_withoutQCed_heart_extra_tissues=unlist(lapply(columns_withoutQCed_heart_extra_tissues, function(x) substr(x,1,nchar(x)-4)))
-columns_withoutQCed_heart_extra_tissues=gsub("\\.","-",columns_withoutQCed_heart_extra_tissues)
-colnames(heart_extra_tissues)=c("taxon_name",columns_withoutQCed_heart_extra_tissues)
-dim(heart_extra_tissues)
-colnames(heart_extra_tissues)[which(colnames(heart_extra_tissues)%in%(all_demo_run))]
-
-
-all=merge(all_demo_run,all_extra_tissues,heart_extra_tissues, by.x = "taxon_name", by.y="taxon_name", all=TRUE)
-dim(all)
-all=merge(all,heart_extra_tissues, by.x = "taxon_name", by.y="taxon_name", all=TRUE)
-dim(all)
+all=read.csv(file="./mnt/raid1/argis/GTEx/after_access/all_samples/kaiju/ML_models/CSS_only/Kaiju_taxonomic_results.csv")
 
 #Read the phenotypes data
 metadata=read.delim(file="/mnt/raid1/argis/GTEx/after_access/all_samples_QC/GTEx_Argis_QCed_all_metadata.tab")
@@ -108,6 +73,8 @@ all_sub=all[rowSums(all==0, na.rm=TRUE)<ncol(all), ]
 all_sub2=all_sub 
 all_sub2[is.na(all_sub2)]=0
 all_sub2=all_sub2[rowSums(all_sub2==0, na.rm=TRUE)<ncol(all_sub2), ]
+columns=gsub("\\.","-",colnames(all_sub2)[2:length(colnames(all_sub2))])
+colnames(all_sub2)=c("taxon_name",columns)
 
 #Change the order of the records of metadata according to all_sub columns
 metadata2=metadata[match(colnames(all_sub2), metadata$specimen_id), ]
