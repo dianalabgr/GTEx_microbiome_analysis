@@ -1,5 +1,5 @@
 #Read the file with the names of the samples that we will download 
-with open('files_objectID_new.txt') as fh:
+with open('files_objectID_all.txt') as fh:
 	lines = [line.strip() for line in fh]
 	samples_dictionary={}
 #	print(lines)
