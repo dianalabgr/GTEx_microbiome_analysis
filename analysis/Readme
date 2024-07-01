@@ -1,0 +1,15 @@
+In the folder analysis: there are the scritps
+
+    number_reads_per_step (needed file from zenodo NumberReads_samples_logs.zip)
+    alphaDiversity_and_core_microbiome
+    ML_models_1vs27Tissues
+    InSilicoContamination
+    ML_model_1vs7tissues_featureImportanceAnalysis
+    BoxPlots_per_microbiome_8ImportantTissues
+    ML_models_with_Kaiju
+    ML_models_1vs7Tissues_GeneraLevel
+    ML_models_1vs27Tissues_GeneraLevel
+    ML_models_1vs7Tissues_Genes
+    factor_associated_with_microbiome
+    ML_model_1vs7tissues_testLivingTissues
+    Living_dataset
