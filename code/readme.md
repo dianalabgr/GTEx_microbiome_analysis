@@ -1,5 +1,5 @@
 In this folder : 
-there are the scripts for creating all the necessary files for the analysis! The order of steps for recreating the results are : 
+there are the scripts for QC of samples, downloading GTEx data, QC of the reads, and taxonomic and functional profiling of the samples! The order of steps for recreating the results are : 
   1. QC_samples_subjects
   2. download_GTEx_data
   3. Quality_Trimming_reads
@@ -7,4 +7,4 @@ there are the scripts for creating all the necessary files for the analysis! The
   5. Isolation_microbial_reads_remaping_bowtie
   6. humann3_after_bowtie
   7. Taxonomic_Assignment_Kaiju
-  8. living_dataset (contains the pipeline for downloading and analyzing the data from the project PRJEB4337)
+  8. living_dataset (contains the pipeline for downloading and analyzing the data from the NCBI Bioproject PRJEB4337)
