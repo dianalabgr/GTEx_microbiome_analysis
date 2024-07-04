@@ -13,7 +13,7 @@ there are the scripts for creating the taxonomic and functional profiles of samp
   1. QC_samples_subjects
   2. download_GTEx_data
   3. Quality_Trimming_reads
-  4. Taxonomic_Assignment_Agamemnon (here are the folder Agamemnon_changed_folders that contains all the files different from the original GitHub repo, you just replace them in the AGAMEMNON folder - needs the extra files from the original repo to run, and the folder creation_reference_database with the instruction on how to create the database used in the study). To run AGAMEMNON see the https://github.com/ivlachos/agamemnon/wiki/Use-case
+  4. Taxonomic_Assignment_Agamemnon (here are the folder Agamemnon_changed_folders that contains all the files different from the original github repo (https://github.com/ivlachos/agamemnon), you just replace them in the AGAMEMNON folder and you follow the instructions in the folder creation_reference_database on how to create the database used in the study. To run AGAMEMNON see the https://github.com/ivlachos/agamemnon/wiki/Use-case
   5. Isolation_microbial_reads_remaping_bowtie
   6. humann3_after_bowtie
   7. Taxonomic_Assignment_Kaiju
@@ -21,7 +21,7 @@ there are the scripts for creating the taxonomic and functional profiles of samp
 
 
 In the folder "analysis":
-there are the scritps for replicating the results shown in the paper. For replicating the results, there is no need to recreate the taxonomic and functional profiles as they are already provided in Zenodo along with the needed GTEx samples metadata file. 
+there are the scripts for replicating the results shown in the paper. For replicating the results, there is no need to recreate the taxonomic and functional profiles as they are already provided in Zenodo along with the needed GTEx samples metadata file. 
   1. number_reads_per_step (needed file from zenodo NumberReads_samples_logs.zip)
   2. alphaDiversity_and_core_microbiome
   3. ML_models_1vs27Tissues
